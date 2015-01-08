@@ -52,3 +52,10 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#PyCharm project files
+*.iml
+.idea/*
+.pycharmproject
+
+.deploy.cfg
