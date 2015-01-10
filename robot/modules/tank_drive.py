@@ -8,8 +8,7 @@ from yeti.wpilib_extensions import Referee
 
 class TankDrive(yeti.Module):
     """
-    A 2-Joystick Mecanum drivetrain module, using Tank drive.
-    UNFINISHED!!!!!
+    A 2-Joystick Mecanum drivetrain module, using Tank drive controls.
     """
 
     USE_CAN = False
@@ -19,8 +18,10 @@ class TankDrive(yeti.Module):
         self.referee = Referee(self)
 
         #Setup a joystick
-        self.joystick = wpilib.Joystick(0)
-        self.referee.watch(self.joystick)
+        self.left_joystick = wpilib.Joystick(0)
+        self.referee.watch(self.left_joystick)
+        self.right_joystick = wpilib.Joystick(1)
+        self.referee.watch(self.right_joystick)
 
         if self.USE_CAN:
             motor_controller_class = wpilib.CANJaguar
@@ -52,12 +53,16 @@ class TankDrive(yeti.Module):
         #Loop until end of teleop mode.
         while gamemode.is_teleop():
 
-            strafemode = self.joystick.getRawButton(9)
+            ly = self.left_joystick.getY()
+            lx = self.left_joystick.getX()
+            ry = self.right_joystick.getY()
+            rx = self.right_joystick.getX()
 
-            if strafemode:
-                self.robotdrive.mecanumDrive_Cartesian(-self.joystick.getX(), -self.joystick.getY(), 0, 0)
-            else:
-                self.robotdrive.mecanumDrive_Cartesian(0, -self.joystick.getY(), -self.joystick.getX(), 0)
+            y_out = (ly + ry)/2
+            x_out = (lx + rx)/2
+            turn_out = (ly - ry)/2
+
+            self.robotdrive.mecanumDrive_Cartesian(x_out, y_out, turn_out, 0)
 
             #Pause for a moment to let the rest of the code run.
             yield from asyncio.sleep(.05)
