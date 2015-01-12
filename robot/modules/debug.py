@@ -5,7 +5,7 @@ from yeti.wpilib_extensions.buttons import Button
 
 class Debug(yeti.Module):
     """
-    A simple module for reloading all modules with the push of a button.
+    A simple module for reloading all modules with the push of a joystick button.
     """
 
     def module_init(self):

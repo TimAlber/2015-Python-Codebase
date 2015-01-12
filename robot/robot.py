@@ -1,27 +1,12 @@
 #!/usr/bin/env python3
 
 import wpilib
-import yeti
-from yeti.interfaces import gamemode
+from os.path import dirname, abspath
+from yeti.robots import YetiRobot
 
-class FlatMountainBot(wpilib.IterativeRobot):
 
-    def robotInit(self):
-        self.context = yeti.Context()
-        self.config_manager = yeti.ConfigManager()
-        self.config_manager.parse_config("mods.conf")
-        self.config_manager.load_startup_mods(self.context)
-        self.context.start()
-
-    def teleopInit(self):
-        gamemode.set_gamemode(gamemode.TELEOPERATED, context=self.context)
-
-    def disabledInit(self):
-        gamemode.set_gamemode(gamemode.DISABLED, context=self.context)
-
-    def autonomousInit(self):
-        gamemode.set_gamemode(gamemode.AUTONOMOUS, context=self.context)
-
+class FlatMountainBot(YetiRobot):
+    config_dir = abspath(dirname(__file__))
 
 if __name__ == "__main__":
     wpilib.run(FlatMountainBot)
